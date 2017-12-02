@@ -12,6 +12,8 @@
 #include "TextMenu.h"
 #include "HddMenuActions.h"
 
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+
 TEXTMENU *HddMenuInit(void) {
 	TEXTMENUITEM *itemPtr;
 	TEXTMENU *menuPtr;

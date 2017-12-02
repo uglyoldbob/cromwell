@@ -7,6 +7,11 @@
 
 #include <stdarg.h>
 
+typedef unsigned int u32;
+
+extern int printk(const char *szFormat, ...);
+extern void wait_us(u32 ticks);
+
 #define MAX_APPEND_LINE_LENGTH 512
 
 extern struct pci_driver forcedeth_driver;

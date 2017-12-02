@@ -20,6 +20,15 @@
 #include "cpu.h"
 #include "VideoInitialization.h"
 #include "TextMenu.h"
+
+extern void TextMenu(TEXTMENU *menu, TEXTMENUITEM *selectedItem);
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+extern int LoadKernelCdrom(CONFIGENTRY *config);
+extern int LoadKernelFatX(CONFIGENTRY *config);
+extern int LoadKernelNative(CONFIGENTRY *config);
+extern void ExittoLinux(CONFIGENTRY *config);
+extern int BootLoadFlashCD(int cdromId);
+
 CONFIGENTRY *LoadConfigCD(int);
 TEXTMENU *TextMenuInit(void);
 
@@ -112,7 +121,7 @@ void BootMenuEntry(void *entry) {
 }
 
 void DrawChildTextMenu(void *menu) {
-	TextMenu((TEXTMENU*)menu);
+	TextMenu((TEXTMENU*)menu, 0);
 }
 
 #ifdef ETHERBOOT 
@@ -124,7 +133,7 @@ void BootFromEtherboot(void *data) {
 
 #ifdef FLASH
 void FlashBios(void *data) {
-	BootLoadFlashCD();
+	BootLoadFlashCD(*(int*)data);
 }
 #endif
 

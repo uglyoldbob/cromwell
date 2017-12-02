@@ -11,6 +11,8 @@
 
 #undef sprintf
 
+extern int VideoDumpAddressAndData(u32 dwAds, const u8 *baData, u32 dwCountBytesUsable);
+
 ////////////////////////////////////
 // IDE types and constants
 #define IDE_SECTOR_SIZE 		0x200

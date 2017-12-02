@@ -8,6 +8,8 @@
  ***************************************************************************/
 #include "FlashMenuActions.h"
 
+extern int BootLoadFlashCD(int cdromId);
+
 void FlashBiosFromCD(void *cdromId) {
 #ifdef FLASH
 	BootLoadFlashCD(*(int *)cdromId);

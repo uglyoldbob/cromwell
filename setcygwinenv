@@ -10,8 +10,8 @@
 # In order for the exports to be global, this script should be run
 # with the following command line: ". setcygwinenv"
 #
-export OBJCOPY=i686-pc-linux-gnu-objcopy
-export LD=i686-pc-linux-gnu-ld
-export CC=i686-pc-linux-gnu-gcc
+#export OBJCOPY=i686-pc-linux-gnu-objcopy
+#export LD=i686-pc-linux-gnu-ld
+#export CC=i686-pc-linux-gnu-gcc
 export -n INCLUDE
 alias make='make -e'

@@ -16,6 +16,8 @@
 #include "2bload.h"
 #include "sha1.h"
 
+extern void setLED(void *pattern);
+
 extern int decompress_kernel(char*out, char *data, int len);
 
 u32 PciWriteDword(unsigned int bus, unsigned int dev, unsigned int func, unsigned int reg_off, unsigned int dw) 

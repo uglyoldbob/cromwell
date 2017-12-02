@@ -5,6 +5,9 @@ int Confirm_Result;
 static void Confirm_Yes(void*);
 static void Confirm_No(void*);
 
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+extern void TextMenu(TEXTMENU *menu, TEXTMENUITEM *selectedItem);
+
 int Confirm(char *message, char *yesText, char *noText, int defaultItem) {
 	TEXTMENU ConfirmMenu;
 	TEXTMENUITEM YesItem, NoItem;

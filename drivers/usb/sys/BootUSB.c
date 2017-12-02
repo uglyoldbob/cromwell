@@ -11,6 +11,8 @@ void subsys_usb_init(void);
 void module_exit_usb_exit(void);
 
 extern struct pci_device_id  *module_table_pci_ids;
+extern void UsbKeyBoardInit(void);
+extern void UsbKeyBoardRemove(void);
 
 // straigth call...
 int usb_hcd_pci_probe (struct pci_dev *dev, const struct pci_device_id *id);

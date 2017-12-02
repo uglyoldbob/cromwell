@@ -12,6 +12,12 @@
 
 #include "VideoInitialization.h"
 
+extern TEXTMENU *VideoMenuInit(void);
+extern TEXTMENU* ResetMenuInit(void);
+extern TEXTMENU* FlashMenuInit(void);
+extern TEXTMENU* HddMenuInit(void);
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+
 TEXTMENU *TextMenuInit(void) {
 	
 	TEXTMENUITEM *itemPtr;

@@ -22,6 +22,11 @@
 #include "video.h"
 #include "memory_layout.h"
 
+extern char *VideoEncoderName(void);
+extern char *AvCableName(void);
+extern void IconMenuInit(void);
+extern void IconMenu(void);
+
 JPEG jpegBackdrop;
 
 int nTempCursorMbrX, nTempCursorMbrY;

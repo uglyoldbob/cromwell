@@ -5,10 +5,10 @@
 #include "BootFATX.h"
 #include <sys/types.h>
 
-
 #undef FATX_DEBUG
 
 //#define FATX_INFO
+extern int strncmp(const char * cs,const char * ct,size_t count);
 
 int checkForLastDirectoryEntry(unsigned char* entry) {
 

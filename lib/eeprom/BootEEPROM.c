@@ -2,6 +2,8 @@
 #include "VideoInitialization.h"
 #include "BootEEPROM.h"
 
+extern int WriteToSMBus(u8 Address,u8 bRegister,u8 Size,u32 Data_to_smbus);
+
 void BootEepromReadEntireEEPROM() {
 	int i;
 	u8 *pb=(u8 *)&eeprom;

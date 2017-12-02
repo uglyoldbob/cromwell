@@ -13,6 +13,9 @@
 #include "VideoInitialization.h"
 #include "BootEEPROM.h"
 
+#define strcmp grub_strcmp
+extern int grub_strcmp (const char *s1, const char *s2);
+
 void SetWidescreen(void *menuItemText) {
 	char *text = (char *)menuItemText;
 	if (!strcmp(text, "Display Size: Widescreen")) {

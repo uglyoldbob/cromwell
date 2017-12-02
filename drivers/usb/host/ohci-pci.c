@@ -350,7 +350,7 @@ static const struct hc_driver ohci_pci_hc_driver = {
 
 /*-------------------------------------------------------------------------*/
 
-static const struct pci_device_id __devinitdata pci_ids [] = { {
+static struct pci_device_id __devinitdata pci_ids [] = { {
 
 	/* handle any USB OHCI controller */
 	.class =	(PCI_CLASS_SERIAL_USB << 8) | 0x10,

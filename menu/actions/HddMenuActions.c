@@ -8,6 +8,8 @@
  ***************************************************************************/
 #include "HddMenuActions.h"
 
+extern int Confirm(char *message, char *noText, char *yesText, int defaultItem);
+
 void LockHdd(void *driveId) {
 	int nIndexDrive = *(int *)driveId;
 	u8 password[20];

@@ -27,6 +27,15 @@
 #include "encoder.h"
 #include "xcalibur.h"
 
+extern int conexant_calc_hdtv_mode(xbox_hdtv_mode hdtv_mode, unsigned char pll_int, void **mode_out);
+extern int conexant_calc_vga_mode(xbox_av_type av_type, unsigned char pll_int, void **mode_out);
+extern int conexant_calc_mode(xbox_video_mode * mode, struct riva_regs * riva_out);
+extern int focus_calc_hdtv_mode(xbox_hdtv_mode hdtv_mode, unsigned char pll_int, void **encoder_regs);
+extern int focus_calc_mode(xbox_video_mode * mode, struct riva_regs * riva_out );
+extern int I2CWriteBytetoRegister(u8 bPicAddressI2cFormat, u8 bRegister, u8 wDataToWrite);
+extern int ReadfromSMBus(u8 Address,u8 bRegister,u8 Size,u32 *Data_to_smbus);
+extern int WriteToSMBus(u8 Address,u8 bRegister,u8 Size,u32 Data_to_smbus);
+
 void DetectVideoEncoder(void) {
 	if (I2CTransmitByteGetReturn(0x45,0x00) != ERR_I2C_ERROR_BUS) video_encoder = ENCODER_CONEXANT;
 	else if (I2CTransmitByteGetReturn(0x6a,0x00) != ERR_I2C_ERROR_BUS) video_encoder = ENCODER_FOCUS;

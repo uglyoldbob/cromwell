@@ -61,6 +61,8 @@
 
 #include "ufs2.h"
 
+#define isspace grub_isspace
+
 /* used for filesystem map blocks */
 static int mapblock;
 static int mapblock_offset;

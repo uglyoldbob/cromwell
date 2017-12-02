@@ -22,6 +22,8 @@
 #include "decode-jpg.h"
 #define WIDTH_SPACE_PIXELS 5
 
+extern int vsprintf(char *buf, const char *fmt, va_list args);
+
 // returns number of x pixels taken up by ascii character bCharacter
 
 unsigned int BootVideoGetCharacterWidth(u8 bCharacter, bool fDouble)

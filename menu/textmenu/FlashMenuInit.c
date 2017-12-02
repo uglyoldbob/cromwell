@@ -12,6 +12,8 @@
 #include "TextMenu.h"
 #include "FlashMenuActions.h"
 
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+
 TEXTMENU* FlashMenuInit(void) {
 	TEXTMENUITEM *itemPtr;
 	TEXTMENU *menuPtr;

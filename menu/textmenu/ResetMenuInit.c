@@ -11,6 +11,8 @@
 #include "TextMenu.h"
 #include "ResetMenuActions.h"
 
+extern void TextMenuAddItem(TEXTMENU *menu, TEXTMENUITEM *newMenuItem);
+
 TEXTMENU* ResetMenuInit(void) {
 	TEXTMENUITEM *itemPtr;
 	TEXTMENU *menuPtr;

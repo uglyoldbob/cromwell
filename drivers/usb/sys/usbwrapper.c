@@ -9,6 +9,8 @@
 #include <stdarg.h>
 #include "video.h"
 
+extern int vsprintf(char *buf, const char *fmt, va_list args);
+
 /*------------------------------------------------------------------------*/ 
 // Output window for USB messages
 int usb_curs_x=0;

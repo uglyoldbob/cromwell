@@ -15,6 +15,11 @@
 #include "IconMenu.h"
 #include "MenuActions.h"
 
+extern void *TextMenuInit(void);
+extern CONFIGENTRY* LoadConfigFatX(void);
+extern CONFIGENTRY* LoadConfigNative(int drive, int partition);
+extern int strncmp(const char * cs,const char * ct,size_t count);
+
 void InitFatXIcons(void);
 void InitNativeIcons(void);
 

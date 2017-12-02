@@ -10,10 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 
+typedef unsigned int size_t;
+
 #include "2bconsts.h"
 #include "stdint.h"
 #include "cromwell_types.h"
-
 
 /////////////////////////////////
 // LED-flashing codes

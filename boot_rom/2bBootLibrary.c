@@ -10,7 +10,7 @@
 */
 // 20040924 - Updated by dmp to include more str functions, and use ASM
 // where possible. ASM shamelessly stolen from linux-2.6.8.1
-
+typedef unsigned int size_t;
 #include "stdint.h"
 
 size_t strlen(const char * s)

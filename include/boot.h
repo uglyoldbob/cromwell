@@ -1,6 +1,7 @@
 #ifndef _Boot_H_
 #define _Boot_H_
 
+typedef unsigned int size_t;
 #include "config.h"
 
 /***************************************************************************

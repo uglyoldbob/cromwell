@@ -37,8 +37,11 @@ void startLinux(void* initrdStart, unsigned long initrdSize, const char* appendL
 void setup(void* KernelPos, void* PhysInitrdPos, unsigned long InitrdSize, const char* kernel_cmdline);
 void I2CRebootSlow(void);
 
-void try_elf_boot (char* data, int len);
-
+//try_elf_boot is part of etherboot, which is not being compiled
+//TODO: add compile time check for this
+void try_elf_boot (char* data, int len)
+{
+}
 
 void BootPrintConfig(CONFIGENTRY *config) {
 	int CharsProcessed=0, CharsSinceNewline=0, Length=0;

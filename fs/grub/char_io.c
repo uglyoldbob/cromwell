@@ -19,6 +19,7 @@
  */
 
 #include <shared.h>
+extern int tolower(int ch);
 
 char *
 convert_to_ascii (char *buf, int c,...)
@@ -128,9 +129,8 @@ grub_isspace (int c)
    a static library supporting minimal standard C functions and link
    each image with the library. Complicated things should be left to
    computer, definitely. -okuji  */
-#if !defined(STAGE1_5) || defined(FSYS_VSTAFS)
-int
-grub_strcmp (const char *s1, const char *s2)
+#if 1 //!defined(STAGE1_5) || defined(FSYS_VSTAFS)
+int grub_strcmp (const char *s1, const char *s2)
 {
   while (*s1 || *s2)
     {

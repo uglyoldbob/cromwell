@@ -1,5 +1,8 @@
 #include "boot.h"
 
+extern char * strsep(char **s, const char *ct);
+extern int strncmp(const char * cs,const char * ct,size_t count);
+
 CONFIGENTRY *ParseConfig(char *szBuffer, unsigned int fileLen, char *szPath) {
 	char *linePtr;
 	char *currentPos = szBuffer;
