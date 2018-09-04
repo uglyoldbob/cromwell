@@ -1,7 +1,7 @@
 #CC	= gcc
 # prepare check for gcc 3.3, $(GCC_3.3) will either be 0 or 1
 GCC_3.3 := $(shell expr `$(CC) -dumpversion` \>= 3.3)
-
+																																																																																											
 #ETHERBOOT := yes
 INCLUDE += -I$(TOPDIR)/grub -I$(TOPDIR)/include -I$(TOPDIR)/ -I./ -I$(TOPDIR)/fs/cdrom \
 	-I$(TOPDIR)/fs/fatx -I$(TOPDIR)/fs/grub -I$(TOPDIR)/lib/eeprom -I$(TOPDIR)/lib/crypt \
@@ -14,11 +14,17 @@ INCLUDE += -I$(TOPDIR)/grub -I$(TOPDIR)/include -I$(TOPDIR)/ -I./ -I$(TOPDIR)/fs
 CROM_CFLAGS=$(INCLUDE)
 
 #You can override these if you wish.
-CFLAGS= -O2 -g -march=pentium -Werror -fomit-frame-pointer -Wstrict-prototypes -ffreestanding
+CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC
 
-# add the option for gcc 3.3 only, again, non-overridable
-ifeq ($(GCC_3.3), 1)
-CROM_CFLAGS += -fno-zero-initialized-in-bss
+# add the option for gcc 4.2 only, again, non-overridable
+ifeq ($(GCC_4.2), 1)
+CFLAGS += -fno-stack-protector -U_FORTIFY_SOURCE
+endif
+
+# add the option for gcc 4.2 only, again, non-overridable
+ifeq ($(GCC_6.2), 1)
+CFLAGS += -fno-PIC
+2BL_CFLAGS += -fno-PIC
 endif
 
 TOPDIR  := $(shell /bin/pwd)
