@@ -102,8 +102,7 @@ start_linux:
 	// Copy the GDT to its final location
 	movl $GDT_LOC, %edi
 	movl $tableGdt, %esi
-	movl $(tableGdtEnd-tableGdt), %ecx
-	shrl $2, %ecx
+	movl $(tableGdtEnd-tableGdt)/4, %ecx
 	rep movsl
 
 	// Load the new GDT
@@ -139,7 +138,7 @@ reload_cs:
         
     // We clear the IDT in RAM   (IDT located @  0xb0000 )
 	xor %eax, %eax
-	movl $0x1400, %ecx
+	movl $0x5000/4, %ecx
 	movl $IDT_LOC, %edi
 	rep stosl
 	wbinvd

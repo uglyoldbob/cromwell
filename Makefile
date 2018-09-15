@@ -11,10 +11,10 @@ INCLUDE += -I$(TOPDIR)/grub -I$(TOPDIR)/include -I$(TOPDIR)/ -I./ -I$(TOPDIR)/fs
 	-I$(TOPDIR)/lib/jpeg/ -I$(TOPDIR)/menu/actions -I$(TOPDIR)/menu/textmenu -I$(TOPDIR)/menu/iconmenu
 
 #These are intended to be non-overridable.
-CROM_CFLAGS=$(INCLUDE)
+CROM_CFLAGS=$(INCLUDE) -Wa,--divide
 
 #You can override these if you wish.
-CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC
+CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC -Wa,--divide
 
 # add the option for gcc 4.2 only, again, non-overridable
 ifeq ($(GCC_4.2), 1)
@@ -34,7 +34,7 @@ ifeq ($(ETHERBOOT), yes)
 ETH_SUBDIRS = etherboot
 CROM_CFLAGS	+= -DETHERBOOT
 ETH_INCLUDE = 	-I$(TOPDIR)/etherboot/include -I$(TOPDIR)/etherboot/arch/i386/include	
-ETH_CFLAGS  = 	-O2 -march=pentium -mtune=pentium -Werror $(ETH_INCLUDE) -Wstrict-prototypes -fomit-frame-pointer -pipe -Ui386
+ETH_CFLAGS  = 	-O2 -march=pentium -mtune=pentium -Werror $(ETH_INCLUDE) -Wstrict-prototypes -fomit-frame-pointer -pipe -Ui386 -Wa,--divide
 endif
 
 LDFLAGS-ROM     = -s -S -T $(TOPDIR)/scripts/ldscript-crom.ld
@@ -231,4 +231,7 @@ imagecompress: obj/image-crom.bin bin/imagebld
 	bin/imagebld -rom obj/2blimage.bin obj/image-crom.bin.tmp.gz image/cromwell.bin image/cromwell_1024.bin
 	bin/imagebld -xbe xbe/xromwell.xbe obj/image-crom.bin
 	bin/imagebld -vml boot_vml/disk/vmlboot obj/image-crom.bin 
+
+%.o     : %.S
+	${CC} -DASSEMBLER ${CFLAGS} -Wa,--divide -o $@ -c $<
 
