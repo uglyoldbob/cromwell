@@ -111,9 +111,8 @@
 	// Note: never change this from offset 0x1000 ....
 	// This is the Main Entry point ....        
         .org 0x1000
-        
        	// Good Morning CPU
-
+.xbox_start:
 	// NOTE:
 	/*
 		We come here form the high rom section Jump
@@ -126,7 +125,7 @@
 	xor	%eax, %eax
 	xor	%edx, %edx
 	wrmsr
-        
+
 	// Interrupts now Dead
 
 	xor	%eax, %eax
@@ -303,7 +302,7 @@ initaftermemcpy:
 */ 
         // We set up a GDT now, this is not necessary needed, 
         // but it is preferred, as we have more ability with commands
-        
+
         // We clear the IDT in RAM
         xor %eax,%eax
 	mov $0x5000,%ecx

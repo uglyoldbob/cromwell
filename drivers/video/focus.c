@@ -313,7 +313,7 @@ int focus_calc_mode(xbox_video_mode * mode, struct riva_regs * riva_out)
 	pll_settings.tv_htotal = tv_htotal;
 	pll_settings.tv_vtotal = tv_vtotal;
 	
-	if (!focus_calc_pll_settings(&pll_settings,regs)) {
+	if (!focus_calc_pll_settings(&pll_settings,(char*)regs)) {
 		//Unable to calculate a valid PLL solution	
 		return 1;
 	}
@@ -345,7 +345,7 @@ int focus_calc_mode(xbox_video_mode * mode, struct riva_regs * riva_out)
 }
 
 int focus_calc_pll_settings(focus_pll_settings *settings, char *regs) {
-        int m, n, p;
+        int m, n;
 	long dotclock = (*settings).dotclock;
 	int pll_multiplier;
 	long ncon, ncod;

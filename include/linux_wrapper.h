@@ -317,11 +317,9 @@ struct usbdevfs_hub_portinfo
 
 #undef list_for_each_entry
 #define list_for_each_entry(pos, head, member)                          \
-        for (pos = list_entry((head)->next, typeof(*pos), member),      \
-                     prefetch(pos->member.next);                        \
+        for (pos = list_entry((head)->next, typeof(*pos), member);                        \
              &pos->member != (head);                                    \
-             pos = list_entry(pos->member.next, typeof(*pos), member),  \
-                     prefetch(pos->member.next))
+             pos = list_entry(pos->member.next, typeof(*pos), member))
 
 /*------------------------------------------------------------------------*/ 
 /* function wrapper macros */
@@ -578,7 +576,7 @@ void usb_hcd_pci_remove (struct pci_dev *dev);
 #define my_udelay(x) wait_ms(x)
 #define udelay(x) my_udelay(x)
 
-#define my_mdelay(x) wait_ms(1+x/1000);
+#define my_mdelay(x) wait_ms(1+(x)/1000);
 #define mdelay(x) my_mdelay(x);
 
 #define pci_find_slot(a,b) my_pci_find_slot(a,b)

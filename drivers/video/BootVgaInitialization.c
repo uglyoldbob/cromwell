@@ -384,9 +384,9 @@ void BootVgaInitializationKernelNG(CURRENT_VIDEO_MODE_DETAILS * pvmode) {
 				XCal_Reg = newmode.encoder_regs;
 				regs = malloc(4);
 				
-				ReadfromSMBus(0x70,4,4,&i);
+				ReadfromSMBus(0x70,4,4,(u32*)&i);
 				WriteToSMBus(0x70,4,4,0x0F000000);
-				ReadfromSMBus(0x70,0,4,&i);
+				ReadfromSMBus(0x70,0,4,(u32*)&i);
 				WriteToSMBus(0x70,0,4,0x00000000);
 			               
 				for(i = 0; i < 0x90; i++) {
@@ -495,8 +495,7 @@ static void mapNvMem (RIVA_HW_INST *riva, u8 *IOAddress)
 
 static void NVDisablePalette (RIVA_HW_INST *riva, int head)
 {
-	volatile CARD8 tmp;
-	tmp = VGA_RD08(riva->PCIO + head * HEAD, VGA_IOBASE_COLOR + VGA_IN_STAT_1_OFFSET);
+	VGA_RD08(riva->PCIO + head * HEAD, VGA_IOBASE_COLOR + VGA_IN_STAT_1_OFFSET);
 	VGA_WR08(riva->PCIO + head * HEAD, VGA_ATTR_INDEX, 0x20);
 }
 

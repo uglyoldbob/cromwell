@@ -397,7 +397,7 @@ int BootIdeDriveInit(unsigned uIoBase, int nIndexDrive)
 		pw=(u16 *)&(drive_info[27]);
 		tsaHarddiskInfo[nIndexDrive].m_length =
 			copy_swap_trim(tsaHarddiskInfo[nIndexDrive].m_szIdentityModelNumber,(u8 *)pw,40);
-		copy_swap_trim(tsaHarddiskInfo[nIndexDrive].m_szFirmware,(u8 *)&(drive_info[23]),8);
+		copy_swap_trim((unsigned char*)tsaHarddiskInfo[nIndexDrive].m_szFirmware,(u8 *)&(drive_info[23]),8);
 
 	}
 
@@ -538,7 +538,6 @@ int DriveSecurityChange(unsigned uIoBase, int driveId, ide_command_t ide_cmd, un
 	//Todo: Check drive is in correct state for command desired.
 	char ide_cmd_data[2+512];	
 	char baBuffer[512];
-	unsigned short*	drive_info = (unsigned short*)baBuffer;
 	tsIdeCommandParams tsicp = IDE_DEFAULT_COMMAND;
 	tsIdeCommandParams tsicp1 = IDE_DEFAULT_COMMAND;
 

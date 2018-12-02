@@ -78,7 +78,7 @@ static int xremote_probe(struct usb_interface *intf, const struct usb_device_id 
 	struct urb *urb;
 	struct usb_device *udev = interface_to_usbdev (intf);
 	struct usb_endpoint_descriptor *ep_irq_in;
-	struct usb_endpoint_descriptor *ep_irq_out;
+//	struct usb_endpoint_descriptor *ep_irq_out;
 	struct xremote_info *xri;
 
 	xri=(struct xremote_info *)kmalloc(sizeof(struct xremote_info),0);
@@ -98,14 +98,14 @@ static int xremote_probe(struct usb_interface *intf, const struct usb_device_id 
 	usb_submit_urb(urb,GFP_ATOMIC);
 	usb_set_intfdata(intf,xri);
 
-	usbprintk("DVD Remote connected\n");
+//	usbprintk("DVD Remote connected\n");
 	return 0;
 }
 
 static void xremote_disconnect(struct usb_interface *intf)
 {
 	struct xremote_info *xri = usb_get_intfdata (intf);
-	usbprintk("DVD Remote disconnected\n ");
+//	usbprintk("DVD Remote disconnected\n ");
 	usb_unlink_urb(xri->urb);
 	usb_free_urb(xri->urb);
 	kfree(xri);
@@ -130,7 +130,7 @@ void XRemoteInit(void)
 {
 
 	current_remote_key=0;
-	usbprintk("XRemote probe %p ",xremote_probe);
+//	usbprintk("XRemote probe %p ",xremote_probe);
 	if (usb_register(&xremote_driver) < 0) {
 		err("Unable to register XRemote driver");
 		return;

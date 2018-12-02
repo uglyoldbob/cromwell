@@ -32,7 +32,7 @@ static void usb_api_blocking_completion(struct urb *urb, struct pt_regs *regs)
 // Starts urb and waits for completion or timeout
 static int usb_start_wait_urb(struct urb *urb, int timeout, int* actual_length)
 { 
-	DECLARE_WAITQUEUE(wait, current);
+//	DECLARE_WAITQUEUE(wait, current);
 	struct usb_api_data awd;
 	int status;
 
@@ -563,7 +563,7 @@ void usb_sg_cancel (struct usb_sg_request *io)
 int usb_get_descriptor(struct usb_device *dev, unsigned char type, unsigned char index, void *buf, int size)
 {
 	int i = 5;
-	int result;
+	int result = 0;
 	
 	memset(buf,0,size);	// Make sure we parse really received data
 

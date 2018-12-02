@@ -41,9 +41,6 @@ extern KNOWN_FLASH_TYPE aknownflashtypesDefault[];
 //  BootResetAction()
 
 extern void BootResetAction ( void ) {
-	bool fMbrPresent=false;
-	bool fSeenActive=false;
-	int nFATXPresent=false;
 	int nTempCursorX, nTempCursorY;
 	int n, nx;
 	

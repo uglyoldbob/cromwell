@@ -86,7 +86,7 @@ CONFIGENTRY* LoadConfigNative(int drive, int partition) {
 	CONFIGENTRY *config;
 	CONFIGENTRY *currentConfigItem;
 	unsigned int nLen;
-	u32 dwConfigSize=0;
+//	u32 dwConfigSize=0;
 	char *szGrub;
 	
 	szGrub = (char *) malloc(265+4);
@@ -122,7 +122,7 @@ CONFIGENTRY* LoadConfigNative(int drive, int partition) {
 		nRet=grub_open(szGrub);
 	}
 	
-	dwConfigSize=filemax;
+//	dwConfigSize=filemax;
 	if (nRet!=1 || errnum) {
 		//File not found
 		free(szGrub);
@@ -186,7 +186,7 @@ int LoadKernelNative(CONFIGENTRY *config) {
         
 	// Use INITRD_START as temporary location for loading the Kernel 
 	tempBuf = (u8*)INITRD_START;
-	dwKernelSize=grub_read(tempBuf, MAX_KERNEL_SIZE);
+	dwKernelSize=grub_read((char*)tempBuf, MAX_KERNEL_SIZE);
 	memPlaceKernel(tempBuf, dwKernelSize);
 	grub_close();
 	printk(" -  %d bytes...\n", dwKernelSize);
@@ -229,13 +229,13 @@ CONFIGENTRY* LoadConfigFatX(void) {
 		if(LoadFATXFile(partition,"/linuxboot.cfg",&fileinfo)) {
 			//Root of E has a linuxboot.cfg in
 			config = (CONFIGENTRY*)malloc(sizeof(CONFIGENTRY));	
-			config = ParseConfig(fileinfo.buffer, fileinfo.fileSize, NULL);
+			config = ParseConfig((char*)fileinfo.buffer, fileinfo.fileSize, NULL);
 			free(fileinfo.buffer);
 		}
 		else if(LoadFATXFile(partition,"/debian/linuxboot.cfg",&fileinfo) ) {
 			//Try in /debian on E
 			config = (CONFIGENTRY*)malloc(sizeof(CONFIGENTRY));	
-			config = ParseConfig(fileinfo.buffer, fileinfo.fileSize, "/debian");
+			config = ParseConfig((char*)fileinfo.buffer, fileinfo.fileSize, "/debian");
 			free(fileinfo.buffer);
 			CloseFATXPartition(partition);
 		}

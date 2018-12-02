@@ -337,7 +337,7 @@ int usb_parse_configuration(struct usb_host_config *config, char *buffer)
 			}
 		}
 
-		retval = usb_parse_interface(config->interface + i, buffer, size);
+		retval = usb_parse_interface(config->interface + i, (unsigned char*)buffer, size);
 		if (retval < 0)
 			return retval;
 
@@ -487,9 +487,9 @@ int usb_get_configuration(struct usb_device *dev)
 			goto err;
 		}
 
-		dev->rawdescriptors[cfgno] = bigbuffer;
+		dev->rawdescriptors[cfgno] = (char*)bigbuffer;
 
-		result = usb_parse_configuration(&dev->config[cfgno], bigbuffer);
+		result = usb_parse_configuration(&dev->config[cfgno], (char*)bigbuffer);
 		if (result > 0)
 			dbg("descriptor data left");
 		else if (result < 0) {

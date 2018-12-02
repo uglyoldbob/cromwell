@@ -166,7 +166,7 @@ static int ohci_urb_enqueue (
 	urb_priv_t	*urb_priv;
 	unsigned int	pipe = urb->pipe;
 	int		i, size = 0;
-	unsigned long	flags;
+//	unsigned long	flags;
 	int		retval = 0;
 	
 #ifdef OHCI_VERBOSE_DEBUG
@@ -230,7 +230,7 @@ static int ohci_urb_enqueue (
 		}
 	}	
 
-	spin_lock_irqsave (&ohci->lock, flags);
+//	spin_lock_irqsave (&ohci->lock, flags);
 
 	/* don't submit to a dead HC */
 	if (ohci->disabled || ohci->sleeping) {
@@ -269,7 +269,7 @@ static int ohci_urb_enqueue (
 fail:
 	if (retval)
 		urb_free_priv (ohci, urb_priv);
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 	return retval;
 }
 
@@ -282,13 +282,13 @@ fail:
 static int ohci_urb_dequeue (struct usb_hcd *hcd, struct urb *urb)
 {
 	struct ohci_hcd		*ohci = hcd_to_ohci (hcd);
-	unsigned long		flags;
+//	unsigned long		flags;
 	
 #ifdef OHCI_VERBOSE_DEBUG
 	urb_print (urb, "UNLINK", 1);
 #endif		  
 
-	spin_lock_irqsave (&ohci->lock, flags);
+//	spin_lock_irqsave (&ohci->lock, flags);
 	if (!ohci->disabled) {
 		urb_priv_t  *urb_priv;
 
@@ -313,7 +313,7 @@ static int ohci_urb_dequeue (struct usb_hcd *hcd, struct urb *urb)
 			spin_lock (&ohci->lock);
 		}
 	}
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 	return 0;
 }
 
@@ -328,7 +328,7 @@ ohci_endpoint_disable (struct usb_hcd *hcd, struct hcd_dev *dev, int ep)
 {
 	struct ohci_hcd		*ohci = hcd_to_ohci (hcd);
 	int			epnum = ep & USB_ENDPOINT_NUMBER_MASK;
-	unsigned long		flags;
+//	unsigned long		flags;
 	struct ed		*ed;
 
 	/* ASSERT:  any requests/urbs are being unlinked */
@@ -339,7 +339,7 @@ ohci_endpoint_disable (struct usb_hcd *hcd, struct hcd_dev *dev, int ep)
 		epnum |= 1;
 
 rescan:
-	spin_lock_irqsave (&ohci->lock, flags);
+//	spin_lock_irqsave (&ohci->lock, flags);
 	ed = dev->ep [epnum];
 	if (!ed)
 		goto done;
@@ -371,7 +371,7 @@ rescan:
 	}
 	dev->ep [epnum] = 0;
 done:
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 	return;
 }
 

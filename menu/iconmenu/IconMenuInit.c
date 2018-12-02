@@ -74,7 +74,7 @@ void InitFatXIcons(void) {
 	if (tsaHarddiskInfo[driveId].m_fDriveExists && !tsaHarddiskInfo[driveId].m_fAtapi) {
 		memset(ba,0x00,512);
 		BootIdeReadSector(driveId, ba, 3, 0, 512);
-		if (!strncmp("BRFR",ba,4)) {
+		if (!strncmp("BRFR",(char*)ba,4)) {
 			//Got a FATX formatted HDD
 			CONFIGENTRY *entry = (CONFIGENTRY*)LoadConfigFatX();
 			if (entry !=NULL) {
@@ -101,7 +101,7 @@ void InitNativeIcons(void) {
 	for (driveId=0; driveId<2; driveId++) {
 		if (tsaHarddiskInfo[driveId].m_fDriveExists && !tsaHarddiskInfo[driveId].m_fAtapi) {
 			volatile u8 *pb;
-			int n=0, nPos=0;
+			int n=0;
 			
 			memset(ba,0x00,512);
 			BootIdeReadSector(driveId, ba, 0, 0, 512);

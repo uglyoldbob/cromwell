@@ -186,12 +186,10 @@ unsigned long read_file(int driveId, struct iso_directory_record *dir_read, char
 int BootIso9660GetFile(int driveId, char *szcPath, unsigned char *pbaFile, unsigned int dwFileLengthMax) {
 	struct iso_primary_descriptor *pvd;
 	struct iso_directory_record *rootd;
-	unsigned long read_size;
+
 	unsigned long offset;
 	struct iso_directory_record *dir;
 	
-	read_size = ISOFS_BLOCK_SIZE;
-
 	pvd = (struct iso_primary_descriptor *)malloc(sizeof(struct iso_primary_descriptor));
 	memset(pvd,0x0,sizeof(struct iso_primary_descriptor));
 	dir = (struct iso_directory_record *)malloc(sizeof(struct iso_directory_record));
@@ -210,7 +208,7 @@ int BootIso9660GetFile(int driveId, char *szcPath, unsigned char *pbaFile, unsig
 	offset = read_dir(driveId, rootd, szcPath, "", dir);
 	
 	if(offset > 0) {
-		return read_file(driveId, dir, pbaFile, dwFileLengthMax);
+		return read_file(driveId, dir, (char*)pbaFile, dwFileLengthMax);
 	} else {
 		//Not found
 		free(pvd);

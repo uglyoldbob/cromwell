@@ -420,7 +420,7 @@ static int rh_call_control (struct usb_hcd *hcd, struct urb *urb)
 		/* non-generic request */
 		urb->status = hcd->driver->hub_control (hcd,
 			typeReq, wValue, wIndex,
-			ubuf, wLength);
+			(char*)ubuf, wLength);
 		break;
 error:
 		/* "protocol stall" on error */
@@ -531,11 +531,11 @@ static int rh_urb_enqueue (struct usb_hcd *hcd, struct urb *urb)
 {
 	if (usb_pipeint (urb->pipe)) {
 		int		retval;
-		unsigned long	flags;
+//		unsigned long	flags;
 
-		spin_lock_irqsave (&hcd_data_lock, flags);
+//		spin_lock_irqsave (&hcd_data_lock, flags);
 		retval = rh_status_urb (hcd, urb);
-		spin_unlock_irqrestore (&hcd_data_lock, flags);
+//		spin_unlock_irqrestore (&hcd_data_lock, flags);
 		return retval;
 	}
 	if (usb_pipecontrol (urb->pipe))
@@ -928,7 +928,7 @@ static int hcd_alloc_dev (struct usb_device *udev)
 {
 	struct hcd_dev		*dev;
 	struct usb_hcd		*hcd;
-	unsigned long		flags;
+//	unsigned long		flags;
 
 	if (!udev || udev->hcpriv)
 		return -EINVAL;
@@ -946,11 +946,11 @@ static int hcd_alloc_dev (struct usb_device *udev)
 	INIT_LIST_HEAD (&dev->dev_list);
 	INIT_LIST_HEAD (&dev->urb_list);
 
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	list_add (&dev->dev_list, &hcd->dev_list);
 	// refcount is implicit
 	udev->hcpriv = dev;
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 
 	return 0;
 }
@@ -959,7 +959,7 @@ static int hcd_alloc_dev (struct usb_device *udev)
 
 static void urb_unlink (struct urb *urb)
 {
-	unsigned long		flags;
+//	unsigned long		flags;
 	struct usb_device	*dev;
 
 	/* Release any periodic transfer bandwidth */
@@ -969,10 +969,10 @@ static void urb_unlink (struct urb *urb)
 
 	/* clear all state linking urb to this dev (and hcd) */
 
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	list_del_init (&urb->urb_list);
 	dev = urb->dev;
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 	usb_put_dev (dev);
 }
 
@@ -987,7 +987,7 @@ static int hcd_submit_urb (struct urb *urb, int mem_flags)
 	int			status;
 	struct usb_hcd		*hcd = urb->dev->bus->hcpriv;
 	struct hcd_dev		*dev = urb->dev->hcpriv;
-	unsigned long		flags;
+//	unsigned long		flags;
 	
 
 	if (!hcd || !dev)
@@ -1010,7 +1010,7 @@ static int hcd_submit_urb (struct urb *urb, int mem_flags)
 
 	// FIXME:  verify that quiescing hc works right (RH cleans up)
 
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	if (HCD_IS_RUNNING (hcd->state) && hcd->state != USB_STATE_QUIESCING) {
 		usb_get_dev (urb->dev);
 		list_add_tail (&urb->urb_list, &dev->urb_list);
@@ -1019,7 +1019,7 @@ static int hcd_submit_urb (struct urb *urb, int mem_flags)
 		INIT_LIST_HEAD (&urb->urb_list);
 		status = -ESHUTDOWN;
 	}
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 	if (status)
 		return status;
 
@@ -1138,7 +1138,7 @@ static int hcd_unlink_urb (struct urb *urb)
 	struct hcd_dev			*dev;
 	struct usb_hcd			*hcd = 0;
 	struct device			*sys = 0;
-	unsigned long			flags;
+//	unsigned long			flags;
 	struct completion_splice	splice;
 	int				retval;
 
@@ -1156,7 +1156,7 @@ static int hcd_unlink_urb (struct urb *urb)
 	 * (urb lock, then hcd_data_lock) in case some other CPU is now
 	 * unlinking it.
 	 */
-	spin_lock_irqsave (&urb->lock, flags);
+//	spin_lock_irqsave (&urb->lock, flags);
 	spin_lock (&hcd_data_lock);
 
 	if (!urb->dev || !urb->dev->bus) {
@@ -1209,7 +1209,7 @@ static int hcd_unlink_urb (struct urb *urb)
 		urb->status = -ECONNRESET;
 	}
 	spin_unlock (&hcd_data_lock);
-	spin_unlock_irqrestore (&urb->lock, flags);
+//	spin_unlock_irqrestore (&urb->lock, flags);
 
 	// FIXME remove splicing, so this becomes unlink1 (hcd, urb);
 	if (urb == (struct urb *) hcd->rh_timer.data) {
@@ -1222,10 +1222,10 @@ static int hcd_unlink_urb (struct urb *urb)
 		if (retval) {
 			dev_dbg (sys, "dequeue %p --> %d\n", urb, retval);
 			if (!(urb->transfer_flags & URB_ASYNC_UNLINK)) {
-				spin_lock_irqsave (&urb->lock, flags);
+//				spin_lock_irqsave (&urb->lock, flags);
 				urb->complete = splice.complete;
 				urb->context = splice.context;
-				spin_unlock_irqrestore (&urb->lock, flags);
+//				spin_unlock_irqrestore (&urb->lock, flags);
 			}
 			goto bye;
 		}
@@ -1240,7 +1240,7 @@ static int hcd_unlink_urb (struct urb *urb)
 
 done:
 	spin_unlock (&hcd_data_lock);
-	spin_unlock_irqrestore (&urb->lock, flags);
+//	spin_unlock_irqrestore (&urb->lock, flags);
 bye:
 	if (retval && sys && sys->driver)
 		dev_dbg (sys, "hcd_unlink_urb %p fail %d\n", urb, retval);
@@ -1258,7 +1258,7 @@ bye:
  */
 static void hcd_endpoint_disable (struct usb_device *udev, int endpoint)
 {
-	unsigned long	flags;
+//	unsigned long	flags;
 	struct hcd_dev	*dev;
 	struct usb_hcd	*hcd;
 	struct urb	*urb;
@@ -1278,7 +1278,7 @@ rescan:
 	}
 
 	/* then kill any current requests */
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	list_for_each_entry (urb, &dev->urb_list, urb_list) {
 		int	tmp = urb->pipe;
 
@@ -1296,13 +1296,13 @@ rescan:
 		if (urb->status != -EINPROGRESS)
 			continue;
 		usb_get_urb (urb);
-		spin_unlock_irqrestore (&hcd_data_lock, flags);
+//		spin_unlock_irqrestore (&hcd_data_lock, flags);
 
-		spin_lock_irqsave (&urb->lock, flags);
+//		spin_lock_irqsave (&urb->lock, flags);
 		tmp = urb->status;
 		if (tmp == -EINPROGRESS)
 			urb->status = -ESHUTDOWN;
-		spin_unlock_irqrestore (&urb->lock, flags);
+//		spin_unlock_irqrestore (&urb->lock, flags);
 
 		/* kick hcd unless it's already returning this */
 		if (tmp == -EINPROGRESS) {
@@ -1325,7 +1325,7 @@ rescan:
 		/* list contents may have changed */
 		goto rescan;
 	}
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 
 	/* synchronize with the hardware, so old configuration state
 	 * clears out immediately (and will be freed).
@@ -1345,8 +1345,8 @@ rescan:
 static int hcd_free_dev (struct usb_device *udev)
 {
 	struct hcd_dev		*dev;
-	struct usb_hcd		*hcd;
-	unsigned long		flags;
+//	struct usb_hcd		*hcd;
+//	unsigned long		flags;
 
 	if (!udev || !udev->hcpriv)
 		return -EINVAL;
@@ -1357,7 +1357,7 @@ static int hcd_free_dev (struct usb_device *udev)
 	// should udev->devnum == -1 ??
 
 	dev = udev->hcpriv;
-	hcd = udev->bus->hcpriv;
+//	hcd = udev->bus->hcpriv;
 
 	/* device driver problem with refcounts? */
 	if (!list_empty (&dev->urb_list)) {
@@ -1366,10 +1366,10 @@ static int hcd_free_dev (struct usb_device *udev)
 		return -EINVAL;
 	}
 
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	list_del (&dev->dev_list);
 	udev->hcpriv = NULL;
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 
 	kfree (dev);
 	return 0;
@@ -1485,10 +1485,10 @@ void usb_hc_died (struct usb_hcd *hcd)
 	struct list_head	*devlist, *urblist;
 	struct hcd_dev		*dev;
 	struct urb		*urb;
-	unsigned long		flags;
+//	unsigned long		flags;
 	
 	/* flag every pending urb as done */
-	spin_lock_irqsave (&hcd_data_lock, flags);
+//	spin_lock_irqsave (&hcd_data_lock, flags);
 	list_for_each (devlist, &hcd->dev_list) {
 		dev = list_entry (devlist, struct hcd_dev, dev_list);
 		list_for_each (urblist, &dev->urb_list) {
@@ -1502,7 +1502,7 @@ void usb_hc_died (struct usb_hcd *hcd)
 	urb = (struct urb *) hcd->rh_timer.data;
 	if (urb)
 		urb->status = -ESHUTDOWN;
-	spin_unlock_irqrestore (&hcd_data_lock, flags);
+//	spin_unlock_irqrestore (&hcd_data_lock, flags);
 
 	/* hcd->stop() needs a task context */
 	INIT_WORK (&hcd->work, hcd_panic, hcd);

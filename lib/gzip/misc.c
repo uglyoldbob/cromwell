@@ -79,7 +79,7 @@ static void gzip_release(void **);
 /*
  * This is set up by the setup-routine at boot-time
  */
-static unsigned char *real_mode; /* Pointer to real-mode data */
+//static unsigned char *real_mode; /* Pointer to real-mode data */
 
 char *input_data;
 int input_len;
@@ -143,7 +143,7 @@ static int fill_inbuf(void)
 		error("ran out of input data\n");
 	}
 
-	inbuf = input_data;
+	inbuf = (uch *)input_data;
 	insize = input_len;
 	inptr = 1;
 	return inbuf[0];
@@ -190,7 +190,7 @@ int decompress_kernel(char *out, char *data, int len)
 	input_data = data;
 	input_len = len;
 	
-	output_data = out;
+	output_data = (uch *)out;
 
 	free_mem_ptr = 0x01000000;
 	free_mem_end_ptr = 0x02000000;

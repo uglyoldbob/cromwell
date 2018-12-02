@@ -11,7 +11,7 @@ INCLUDE += -I$(TOPDIR)/grub -I$(TOPDIR)/include -I$(TOPDIR)/ -I./ -I$(TOPDIR)/fs
 	-I$(TOPDIR)/lib/jpeg/ -I$(TOPDIR)/menu/actions -I$(TOPDIR)/menu/textmenu -I$(TOPDIR)/menu/iconmenu
 
 #These are intended to be non-overridable.
-CROM_CFLAGS=$(INCLUDE) -Wa,--divide
+CROM_CFLAGS=$(INCLUDE) -Wall -Werror -Wa,--divide -Wno-unused-function
 
 #You can override these if you wish.
 CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC -Wa,--divide

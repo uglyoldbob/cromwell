@@ -344,13 +344,13 @@ static struct ed *ed_get (
 	struct hcd_dev		*dev = (struct hcd_dev *) udev->hcpriv;
 	struct ed		*ed; 
 	unsigned		ep;
-	unsigned long		flags;
+//	unsigned long		flags;
 
 	ep = usb_pipeendpoint (pipe) << 1;
 	if (type != PIPE_CONTROL && is_out)
 		ep |= 1;
 
-	spin_lock_irqsave (&ohci->lock, flags);
+//	spin_lock_irqsave (&ohci->lock, flags);
 
 	if (!(ed = dev->ep [ep])) {
 		struct td	*td;
@@ -410,7 +410,7 @@ static struct ed *ed_get (
 	}
 
 done:
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 	return ed; 
 }
 
@@ -804,9 +804,9 @@ static struct td *dl_reverse_done_list (struct ohci_hcd *ohci)
 	u32		td_dma;
 	struct td	*td_rev = NULL;
 	struct td	*td = NULL;
-  	unsigned long	flags;
+ // 	unsigned long	flags;
 
-  	spin_lock_irqsave (&ohci->lock, flags);
+ //	spin_lock_irqsave (&ohci->lock, flags);
 	td_dma = le32_to_cpup (&ohci->hcca->done_head);
 	ohci->hcca->done_head = 0;
 
@@ -836,7 +836,7 @@ static struct td *dl_reverse_done_list (struct ohci_hcd *ohci)
 		td_rev = td;
 		td_dma = le32_to_cpup (&td->hwNextTD);
 	}	
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 	return td_rev;
 }
 
@@ -978,9 +978,9 @@ rescan_this:
 static void
 dl_done_list (struct ohci_hcd *ohci, struct td *td, struct pt_regs *regs)
 {
-	unsigned long	flags;
+//	unsigned long	flags;
 
-  	spin_lock_irqsave (&ohci->lock, flags);
+// 	spin_lock_irqsave (&ohci->lock, flags);
   	while (td) {
 		struct td	*td_next = td->next_dl_td;
 		struct urb	*urb = td->urb;
@@ -1010,5 +1010,5 @@ dl_done_list (struct ohci_hcd *ohci, struct td *td, struct pt_regs *regs)
 
     		td = td_next;
   	}  
-	spin_unlock_irqrestore (&ohci->lock, flags);
+//	spin_unlock_irqrestore (&ohci->lock, flags);
 }

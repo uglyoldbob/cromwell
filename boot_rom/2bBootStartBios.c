@@ -66,7 +66,6 @@ void BootAGPBUSInitialization(void)
 /* -------------------------  Main Entry for after the ASM sequences ------------------------ */
 
 extern void BootStartBiosLoader ( void ) {
-
 	// do not change this, this is linked to many many scipts
 	unsigned int PROGRAMM_Memory_2bl 	= 0x00100000;
 	unsigned int CROMWELL_Memory_pos 	= 0x03A00000;
@@ -98,7 +97,7 @@ extern void BootStartBiosLoader ( void ) {
       	SHA1Reset(&context);
 	SHA1Input(&context,(void*)(PROGRAMM_Memory_2bl+20),bootloadersize-20);
 	SHA1Result(&context,SHA1_result);
-	        
+
         if (memcmp(&bootloaderChecksum[0],&SHA1_result[0],20)==0) {
 		// HEHE, the Image we copy'd into ram is SHA-1 hash identical, this is Optimum
 		BootPerformPicChallengeResponseAction();
@@ -169,7 +168,7 @@ extern void BootStartBiosLoader ( void ) {
 			BufferIN = (unsigned char*)(CROMWELL_compress_temploc);
 			BufferINlen=compressed_image_size;
 			BufferOUT = (unsigned char*)CROMWELL_Memory_pos;
-			decompress_kernel(BufferOUT, BufferIN, BufferINlen);
+			decompress_kernel((char*)BufferOUT, (char*)BufferIN, BufferINlen);
 			
 			// This is a config bit in Cromwell, telling the Cromwell, that it is a Cromwell and not a Xromwell
 			flashbank++; // As counting starts with 0, we increase +1

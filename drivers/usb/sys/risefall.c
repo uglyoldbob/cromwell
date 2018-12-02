@@ -10,9 +10,9 @@ extern unsigned int current_keyboard_key;
 
 int risefall_xpad_BUTTON(unsigned char selected_Button) {
 	
-      	int xpad_id; 
+//      	int xpad_id; 
 	int match;
-	extern int xpad_num;
+//	extern int xpad_num;
 	
 	// USB keyboard section 
 	

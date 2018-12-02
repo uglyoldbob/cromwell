@@ -65,7 +65,7 @@ void TextMenuDraw(TEXTMENU* menu, TEXTMENUITEM *firstVisibleMenuItem, TEXTMENUIT
 }
 
 void TextMenu(TEXTMENU *menu, TEXTMENUITEM *selectedItem) {
-	TEXTMENUITEM *itemPtr, *selectedMenuItem, *firstVisibleMenuItem;
+	TEXTMENUITEM *selectedMenuItem, *firstVisibleMenuItem;
 	BootVideoClearScreen(&jpegBackdrop, 0, 0xffff);
 	
 	if (selectedItem!=NULL) selectedMenuItem = selectedItem;
@@ -77,7 +77,6 @@ void TextMenu(TEXTMENU *menu, TEXTMENUITEM *selectedItem) {
 	//Main menu event loop.
 	while(1)
 	{
-		int changed=0;
 		wait_ms(75);
 
 		if (risefall_xpad_BUTTON(TRIGGER_XPAD_PAD_UP) == 1)
