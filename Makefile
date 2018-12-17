@@ -16,6 +16,8 @@ CROM_CFLAGS=$(INCLUDE) -Wall -Werror -Wa,--divide -Wno-unused-function
 #You can override these if you wish.
 CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC -Wa,--divide
 
+CFLAGS += -fno-zero-initialized-in-bss
+
 # add the option for gcc 4.2 only, again, non-overridable
 ifeq ($(GCC_4.2), 1)
 CFLAGS += -fno-stack-protector -U_FORTIFY_SOURCE
