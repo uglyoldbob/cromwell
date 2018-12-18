@@ -52,6 +52,7 @@ static u8 NvGetCrtc(u8 * pbRegs, int nIndex) {
 static void NvSetCrtc(u8 * pbRegs, int nIndex, u8 b) {
 	pbRegs[0x6013d4]=nIndex;
 	pbRegs[0x6013d5]=b;
+	asm volatile("": : :"memory");
 }
 
 xbox_tv_encoding DetectVideoStd(void) {

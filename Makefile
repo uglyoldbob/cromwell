@@ -16,7 +16,7 @@ CROM_CFLAGS=$(INCLUDE) -Wall -Werror -Wa,--divide -Wno-unused-function
 #You can override these if you wish.
 CFLAGS= -Os -march=pentium -m32 -Werror -Wstrict-prototypes -Wreturn-type -fomit-frame-pointer  -DIPv4 -fpack-struct -ffreestanding -fno-PIC -Wa,--divide
 
-CFLAGS += -fno-zero-initialized-in-bss
+CFLAGS += -fno-zero-initialized-in-bss -fno-stack-protector -U_FORTIFY_SOURCE -ggdb
 
 # add the option for gcc 4.2 only, again, non-overridable
 ifeq ($(GCC_4.2), 1)
@@ -39,9 +39,9 @@ ETH_INCLUDE = 	-I$(TOPDIR)/etherboot/include -I$(TOPDIR)/etherboot/arch/i386/inc
 ETH_CFLAGS  = 	-O2 -march=pentium -mtune=pentium -Werror $(ETH_INCLUDE) -Wstrict-prototypes -fomit-frame-pointer -pipe -Ui386 -Wa,--divide
 endif
 
-LDFLAGS-ROM     = -s -S -T $(TOPDIR)/scripts/ldscript-crom.ld
+LDFLAGS-ROM     = -T $(TOPDIR)/scripts/ldscript-crom.ld
 LDFLAGS-XBEBOOT = -s -S -T $(TOPDIR)/scripts/xbeboot.ld
-LDFLAGS-ROMBOOT = -s -S -T $(TOPDIR)/boot_rom/bootrom.ld
+LDFLAGS-ROMBOOT = -S -T $(TOPDIR)/boot_rom/bootrom.ld
 LDFLAGS-VMLBOOT = -s -S -T $(TOPDIR)/boot_vml/vml_start.ld
 ifeq ($(ETHERBOOT), yes)
 LDFLAGS-ETHBOOT = -s -S -T $(TOPDIR)/boot_eth/eth_start.ld
@@ -216,7 +216,13 @@ xromwell.xbe: ${OBJECTS-XBE}
 	${LD} -o $(TOPDIR)/obj/xbeboot.elf ${OBJECTS-XBE} ${LDFLAGS-XBEBOOT}
 	${OBJCOPY} --output-target=binary --strip-all $(TOPDIR)/obj/xbeboot.elf $(TOPDIR)/xbe/$@
 
-cromwell.bin:
+obj/helper.o     : $(TOPDIR)/boot/helper.S
+	${CC} -DASSEMBLER ${CFLAGS} -Wa,--divide -o $@ -c -ggdb $< 
+
+obj/binsym.elf     : obj/helper.o
+	${LD} -o obj/binsym.elf $(TOPDIR)/obj/helper.o ${LDFLAGS-ROM}
+
+cromwell.bin: obj/binsym.elf
 	${LD} -o $(TOPDIR)/obj/2lbimage.elf ${OBJECTS-ROMBOOT} ${LDFLAGS-ROMBOOT}
 	${OBJCOPY} --output-target=binary --strip-all $(TOPDIR)/obj/2lbimage.elf $(TOPDIR)/obj/2blimage.bin
 
@@ -235,5 +241,4 @@ imagecompress: obj/image-crom.bin bin/imagebld
 	bin/imagebld -vml boot_vml/disk/vmlboot obj/image-crom.bin 
 
 %.o     : %.S
-	${CC} -DASSEMBLER ${CFLAGS} -Wa,--divide -o $@ -c $<
-
+	${CC} -DASSEMBLER ${CFLAGS} -Wa,--divide -o $@ -c -ggdb $<
